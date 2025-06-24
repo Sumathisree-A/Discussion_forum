@@ -1,0 +1,28 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<h2>All Threads</h2>
+<a href="{% url 'create_thread' %}">➕ Create New Thread</a>
+<hr>
+<ul>
+  {% for thread in threads %}
+    <li>
+      <a href="{% url 'thread_detail' thread.id %}">{{ thread.title }}</a>
+      <br>
+      <small>by {{ thread.author }} | {{ thread.created_at|date:"M d, Y H:i" }}</small>
+    </li>
+  {% endfor %}
+</ul>
+
+<div class="pagination">
+  {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">⬅ Previous</a>
+  {% endif %}
+
+  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Next ➡</a>
+  {% endif %}
+</div>
+{% endblock %}

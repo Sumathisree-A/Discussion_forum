@@ -1,0 +1,29 @@
+{% extends 'forum/base.html' %}
+
+{% block content %}
+<h2>{{ thread.title }}</h2>
+<p><strong>Author:</strong> {{ thread.author }}</p>
+<hr>
+
+<h3>Replies:</h3>
+<ul>
+  {% for post in posts %}
+    <li>
+      <strong>{{ post.author }}:</strong> {{ post.content }}
+      {% if user.is_authenticated and user.is_staff %}
+        <a href="{% url 'delete_post' post.id %}">[Delete]</a>
+      {% endif %}
+    </li>
+  {% empty %}
+    <li>No replies yet.</li>
+  {% endfor %}
+</ul>
+
+<hr>
+<h3>Reply to Thread</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}
